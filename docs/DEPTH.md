@@ -15,6 +15,7 @@
 | M5 不确定区间 | 运行不确定区间并复核证据 | `POST /api/m5`；`/work/5` | `app/modules/m5_uncertainty/rules.py` | `tests/test_m5.py` |
 | M6 验收对照 | 运行验收对照并复核证据 | `POST /api/m6`；`/work/6` | `app/modules/m6_acceptance/rules.py` | `tests/test_m6.py` |
 | M7 复配批次 | 运行复配批次并复核证据 | `POST /api/m7`；`/work/7` | `app/modules/m7_reblend/rules.py` | `tests/test_m7.py` |
+| M8 追溯召回 | 按批号追溯沾料炉次并生成召回单 | `POST /api/trace`；`/work/8` | `app/modules/m8_trace/rules.py` | `tests/test_m8.py` |
 
 ## 陷阱登记
 
@@ -28,6 +29,9 @@
 | TRAP-15 | 吨与千克 | 静默覆盖或误计 | 显式裁决并保留证据 | `app/modules/m2_assay/rules.py` | `tests/test_m2.py::test_units` |
 | TRAP-19 | 批号元数据冲突优先 | 静默覆盖或误计 | 显式裁决并保留证据 | `app/modules/m3_recipe/rules.py` | `tests/test_m3.py::test_conflicting_lot_mass` |
 | TRAP-25 | 配方版本锁定 | 静默覆盖或误计 | 显式裁决并保留证据 | `app/modules/m3_recipe/rules.py` | `tests/test_m3.py::test_version_lock` |
+| TRAP-26 | 重跑追溯重复开召回单 | 一单变多单 | 追溯键复用+单号按(trace_id,炉次)唯一 | `app/modules/m8_trace/store.py` | `tests/test_m8.py::test_rerun_never_duplicates_recall_orders` |
+| TRAP-27 | 追溯中断状态丢失 | 从头重跑或漏炉 | 逐炉检查点，续跑从frontier继续 | `app/modules/m8_trace/service.py` | `tests/test_m8.py::test_resume_after_interruption` |
+| TRAP-28 | 区间炉次被当作合格 | 误判放行 | 跨越限值即冻结待复测 | `app/modules/m8_trace/rules.py` | `tests/test_m8.py::test_interval_only_heat_not_treated_as_qualified` |
 
 ## 对账规则
 
